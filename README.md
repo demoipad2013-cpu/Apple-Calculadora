@@ -32,7 +32,7 @@ El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el regist
 - Esta versión (GitHub) no registra uso en el Panel de impacto: se muestra un aviso.
 - Con plan solo se ofrece Seguro Connect Daño y Robo y Seguro Connect Daño: se ocultan la garantía extendida, el evento de garantía y la pestaña "Qué cubre la garantía".
 - Cotización por correo: mensaje cordial solo en texto (sin PDF adjunto), con saludo, equipo, plan, opciones de protección, recomendación y firma del asesor.
-- Exchange (antes "Exchange Planes"): financiamiento del saldo solo con garantía extendida 1 o 2 años (recomendada) y garantía fabricante; la garantía extendida se calcula sobre el precio completo del iPhone nuevo (tramo prepago), no sobre el saldo. Íconos de Exchange y Compra Protegida del mismo tamaño que el resto.
+- Exchange (antes "Exchange Planes"): financiamiento del saldo: liberado con garantía extendida 1 o 2 años (recomendada) y garantía fabricante; con plan con Seguro Connect Daño y Robo (recomendado), Seguro Connect Daño y garantía fabricante (folleto CONNECT sobre el 70 % del precio oferta); la garantía extendida se calcula sobre el precio completo del iPhone nuevo (tramo prepago), no sobre el saldo. Íconos de Exchange y Compra Protegida del mismo tamaño que el resto.
 - Se eliminó el cotizador por correo (botón "Cotizar por mail").
 - Seguro Connect: valores en $ del folleto CONNECT por tramo (Daño + Robo Celulares y Daño Accidental), iguales a los de tienda; la opción UF del día queda en Ajustes.
 - Sin pestaña "Qué cubre la garantía" (quedan Comparar cuotas y Beneficios para ti); Partes y piezas y Accesorios ocultos por defecto con interruptor "Mostrar"; sin aviso de datos sin actualizar.

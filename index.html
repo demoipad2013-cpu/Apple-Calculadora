@@ -1433,7 +1433,7 @@ const toPay=()=>Math.max(0,baseAmt()-giftNet());
 
 function xProt(k){if(!X.price)return null;const ip=CATS.find(c=>c.id==='iphone');const mi=ip.models.findIndex(m=>m.name.toLowerCase()===String(X.nm).toLowerCase());
   const sv={grp:S.grp,cat:S.cat,mi:S.mi,price:S.price,plan:S.plan,cov:S.cov,ge2:S.ge2,evt:S.evt,pie2:S.pie2,geMan:S.geMan};
-  Object.assign(S,{grp:'tel',cat:'iphone',mi:mi<0?0:mi,price:X.price,plan:false,cov:X.cov,ge2:false,evt:false,pie2:false,geMan:{}});
+  Object.assign(S,{grp:'tel',cat:'iphone',mi:mi<0?0:mi,price:X.price,plan:k!=='ge'&&X.mode==='plan',cov:X.cov,ge2:false,evt:false,pie2:false,geMan:{}});
   try{if(mi<0&&k==='ge'){const tt=TEL_GE.find(r=>X.price<=r[0]);if(X.cov===12&&tt)return {v:tt[1],src:'fal'}}return protVal(k)}catch(e){return null}finally{Object.assign(S,sv)}}
 
 function render(){const P=$('xPanel');if(!P||P.hidden)return;
@@ -1466,7 +1466,7 @@ function render(){const P=$('xPanel');if(!P||P.hidden)return;
    <div class="xeq"><div class="t"><small>${plan?'Cuota inicial':'Precio'} ${esc(nm)}${plan&&op?' · '+esc(op.op):''}</small><b${plan?' class="plci"':''}>${clp(base)}</b></div><span class="op">−</span>
    <div class="t gc"><small>Gift card Exchange · ${esc(X.gm)} ${esc(capLab(X.gc))}${X.bat?' · batería bajo 80 %':''}</small><b>${clp(giftNet())}</b></div><span class="op">=</span>
    <div class="t tot"><small>El cliente paga</small><b>${clp(pay)}</b></div></div>
-   <p class="xnote">${!base?'Elige el equipo nuevo y revisa el '+(plan?'valor de la cuota inicial.':'precio.'):giftNet()>base?`La gift card cubre todo. Queda un saldo a favor de <b>${clp(giftNet()-base)}</b> en la gift card.`:plan?`Saldo de la cuota inicial <b>${clp(pay)}</b> financiado con CMR.${op&&op.fee?`<br>Además paga ${/^plan/i.test(String(op.pn||''))?'el':'el plan'} <b>${String(op.pn||'').toLowerCase().includes(String(op.op).toLowerCase())?'':esc(op.op)+' · '}${esc(op.pn||'')}</b>: cargo fijo <b>${clp(op.fee)}</b> al mes · mandato ${op.mo} meses.`:''}`:`Saldo <b>${clp(pay)}</b> se paga al contado o en cuotas con CMR.`}</p>`;
+   <p class="xnote">${!base?'Elige el equipo nuevo y revisa el '+(plan?'valor de la cuota inicial.':'precio.'):giftNet()>base?`La gift card cubre todo. Queda un saldo a favor de <b>${clp(giftNet()-base)}</b> en la gift card.`:plan?`Saldo de la cuota inicial <b>${clp(pay)}</b> financiado con CMR.${op&&op.fee?`<br>Además paga ${/^plan/i.test(String(op.pn||''))?'el':'el plan'} <b>${String(op.pn||'').toLowerCase().includes(String(op.op).toLowerCase())?'':esc(op.op)+' · '}${esc(op.pn||'')}</b>: cargo fijo <b>${clp(op.fee)}</b> al mes · mandato ${op.mo} meses.`:''}${X.price?`<br>Con Seguro Connect recupera el 70 % del precio oferta: <b>${clp(Math.round(X.price*.7))}</b>.`:''}`:`Saldo <b>${clp(pay)}</b> se paga al contado o en cuotas con CMR.`}</p>`;
   /* financiamiento */
   $('xQn').innerHTML=[1,3,6,12,18,24,36,48].map(n=>`<button class="chip" type="button" data-xn="${n}" aria-pressed="${n===X.n}">${n===1?'Contado':n}</button>`).join('');
   document.querySelectorAll('[data-xc]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.xc===X.cov)));$('xSI').checked=X.si;
@@ -1474,8 +1474,8 @@ function render(){const P=$('xPanel');if(!P||P.hidden)return;
   const n=X.n,si=X.si,yr=X.cov===12?'1 año':'2 años';const b0=cuota(pay,n,si);
   const WH={p1:'Daño accidental (caídas, golpes, líquidos) y robo del equipo.',p2:'Daño accidental: caídas, golpes y líquidos.',ge:'Fallas mecánicas, eléctricas o electrónicas por '+yr+' más, desde que termina la garantía Apple. Incluye daño por variación de voltaje.',nor:'Fallas de fabricación durante el primer año.'};
   const RC={p1:'<span class="rec70">Recupera el 70 % de la inversión</span>',p2:'<span class="rec70">Recupera el 70 % de la inversión</span>',ge:'<span class="rec70 rec100">Recupera el 100 % de la inversión</span>',nor:''};
-  /* Exchange: solo garantía extendida (1 o 2 años, recomendada) y garantía fabricante */
-  const cols=[{k:'ge',t:'Garantía extendida '+yr,s:X.cov+' meses adicionales · tramo prepago'}];
+  /* Exchange liberado: garantía extendida (recomendada) + fabricante · Exchange con plan: Seguro Connect Daño y Robo (recomendado), Seguro Connect Daño + fabricante (folleto CONNECT sobre el 70 % del precio oferta) */
+  const cols=plan?[{k:'p1',t:'Seguro Connect Daño y Robo',s:'Connect · '+X.cov+' meses · sobre el 70 %'},{k:'p2',t:'Seguro Connect Daño',s:'Connect · '+X.cov+' meses · sobre el 70 %'}]:[{k:'ge',t:'Garantía extendida '+yr,s:X.cov+' meses adicionales · tramo prepago'}];
   cols.push({k:'nor',t:'Garantía fabricante',s:'Apple · 12 meses'});
   const lab=n===1?'Contado':`${n} cuotas${si?' sin interés':''} de`;
   const IC={p1:'robo',p2:'drop',ge:'total',nor:'board'};
