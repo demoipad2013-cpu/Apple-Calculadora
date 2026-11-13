@@ -1,4 +1,4 @@
-# Financiamiento Falabella Apple
+# Financiamiento Falabella
 
 Calculadora para vendedores de Falabella Costanera: cuotas con garantía extendida y Seguro Connect, accesorios por categoría, Exchange Planes y Seguro Compra Protegida.
 
@@ -10,6 +10,8 @@ Calculadora para vendedores de Falabella Costanera: cuotas con garantía extendi
   - `planes_apple.json` — cuotas iniciales por operador (Entel, Claro, WOM).
   - `accesorios.json` — precios normal, oferta y CMR de accesorios.
   - `garantia_watch_airpods.json` — garantía extendida 1 y 2 años.
+  - `planes_iphone.json` — planes por modelo, capacidad y compañía (cuota inicial y cargo fijo).
+  - `precios_apple.json` — precio automático (oferta, CMR y normal) por modelo y capacidad.
 - `imagenes/` — logo de Falabella e íconos de Exchange y Compra Protegida.
 
 ## Publicar en GitHub Pages
@@ -17,3 +19,14 @@ Calculadora para vendedores de Falabella Costanera: cuotas con garantía extendi
 2. Quedará en `https://costaneraelectro.github.io/garantia/apple/`.
 
 La versión de GitHub usa los datos incluidos en `index.html`. La versión publicada en Claude se actualiza sola cada mañana a las 9:00.
+
+## Panel de impacto y cotizador
+El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el registro de cotizaciones funcionan solo en la versión publicada en Claude, porque guardan los datos en su base compartida. En GitHub la calculadora y el cotizador por mail funcionan, pero no se registra el uso.
+
+## Novedades (12/11/2026)
+- Planes: "Así recupera el 70 %" en 3 pasos (precio oferta, cuota inicial, 70 % del precio oferta con Seguro Connect), también en la cotización. No se suma el total de los 18 meses.
+- Exchange + plan: botón "¿Entrega un iPhone usado?" en Cotizar con plan; el resumen Exchange muestra el cargo fijo y el 70 % que recupera con Seguro Connect.
+- Aviso naranjo cuando precios, planes o Exchange no se actualizaron.
+- Modo Capacitación (botón en la barra superior): recorrido guiado; no suma al Panel de impacto.
+- Celular: accesorios, beneficios Connect y argumentos Exchange plegables; Partes y piezas oculto por defecto.
+- Esta versión (GitHub) no registra uso en el Panel de impacto: se muestra un aviso.
