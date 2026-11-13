@@ -616,6 +616,7 @@ html,body{background:#000!important}
 .pl70box li{display:flex;gap:8px}.pl70box li::before{content:"✓";font-weight:800;color:var(--ge)}
 .pl70box h4{margin:0 0 4px;font-size:17px}
 
+#qPrev{display:none}.mdl textarea.qmsg{min-height:440px;line-height:1.5}
 .pl3{grid-column:1/-1;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:10px;background:rgba(255,255,255,.03)}
 .pl3 .k{font-size:13px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
 .pl3 .st{display:flex;gap:12px;align-items:center}.pl3 .st i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;background:#3a3a3c;color:#fff}
@@ -1737,20 +1738,30 @@ document.body.insertAdjacentHTML('beforeend',`<div class="ovl" id="qOvl" hidden>
  <div class="row2"><label>Nombre del cliente<input id="qName" autocomplete="off" placeholder="Nombre"></label><label>Correo del cliente<input id="qMail" type="email" autocomplete="off" placeholder="cliente@correo.com"></label></div>
  <label>Atendido por (opcional)<input id="qSeller" autocomplete="off" placeholder="Nombre del asesor"></label>
  <div class="qprev" id="qPrev"></div>
- <p class="qsec">Escribe el correo</p>
+ <p class="qsec">Correo para el cliente · revísalo y edítalo si quieres</p>
  <label>Asunto<input id="qSubj" autocomplete="off"></label>
  <label>Mensaje<textarea id="qBody" class="qmsg" spellcheck="true"></textarea></label>
- <label class="sw" for="qAtt" style="font-size:14px;color:var(--ink-2)"><span>Adjuntar la cotización en PDF</span><input type="checkbox" id="qAtt" checked></label>
- <div class="qact"><button type="button" class="pri" id="qGo" hidden>Enviar ahora</button><a id="qSend" href="#" target="_blank" rel="noopener">Abrir en app de correo</a><button type="button" id="qPdf">Descargar PDF</button><button type="button" id="qCopy">Copiar texto</button><button type="button" id="qReset">Restablecer texto</button></div><p class="note" id="qMsg"></p></div></div>`);
+ <div class="qact"><button type="button" class="pri" id="qGo" hidden>Enviar ahora</button><a id="qSend" href="#" target="_blank" rel="noopener">Abrir en app de correo</a><button type="button" id="qCopy">Copiar texto</button><button type="button" id="qReset">Restablecer texto</button></div><p class="note" id="qMsg"></p></div></div>`);
 const fdate=d=>d.toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/-/g,'/');
 function quoteData(){const rows=quoteRows();const by=k=>rows.find(r=>r.k===k);const ord=['p1','p2','ge','nor'].map(by).filter(Boolean);
   const NM={p1:'Seguro Connect Daño y Robo',p2:'Seguro Connect Daño',ge:'Garantía extendida '+YR(S.cov),nor:planOn()?'Equipo con plan (sin seguro)':'Garantía de fabricante (Apple, 12 meses)'};
   const acc=(typeof window.accLabel==='function'?accLabel():'').replace(/^ \+ /,'');const n=S.n;
   return {prod:mname(),price:S.price,ptype:S.autoP&&S.ptype==='cmr'?'precio CMR':'precio oferta',acc,total:bp()+(typeof window.accTotal==='function'?accTotal():0),nlab:n===1?'Contado':`${n} cuotas${S.si?' sin interés':''}`,
-    opts:ord.map(r=>({k:r.k,name:NM[r.k],q:r.q,ctc:r.ctc,val:r.val})),date:new Date(),plan:(()=>{const p=planOn()&&window.plSel&&plSel();return p?{op:({CLARO:'Claro',ENTEL:'Entel',WOM:'WOM'})[p.op]||p.op,pn:p.pn,fee:p.fee,ci:p.ci,mo:p.mo,r70:Math.round(plOferta()*.7)}:null})()}}
-function quoteText(Q,name,seller){const L=[];L.push(`Hola${name?' '+name:''}:`,'',`Gracias por visitarnos en Falabella. Esta es tu cotización del ${fdate(Q.date)}:`,'',`Producto: ${Q.prod}`,`Precio: ${clp(Q.price)} (${Q.ptype})`);if(Q.acc)L.push(`Accesorios: ${Q.acc}`);if(Q.plan)L.push(`${Q.plan.pn.toLowerCase().includes(Q.plan.op.toLowerCase())?'':Q.plan.op+' · '}${Q.plan.pn}: cuota inicial ${clp(Q.plan.ci)} + cargo fijo ${clp(Q.plan.fee)} al mes · mandato ${Q.plan.mo} meses`,`Con Seguro Connect recuperas el 70 % del precio oferta: ${clp(Q.plan.r70)}`);L.push(`Financiamiento: ${Q.nlab} con tarjeta CMR`,'','Alternativas de protección:');
-  Q.opts.forEach(o=>L.push(`• ${o.name}: ${Q.nlab==='Contado'?'total':Q.nlab.split(' ')[0]+' cuotas de'} ${clp(o.q)} · total ${clp(o.ctc)}${o.val?` (protección ${clp(o.val)})`:''}`));
-  L.push('',`Cotización válida solo el ${fdate(Q.date)}.`,'','Términos y condiciones: los precios cotizados pueden cambiar sin previo aviso. Al dirigirte a la tienda puedes asesorarte con un asesor de ventas. Valores en cuotas referenciales, sujetos a la evaluación y condiciones de la tarjeta CMR.');if(seller)L.push('',`Te atendió: ${seller}`);L.push('Falabella');return L.join('\n')}
+    opts:ord.map(r=>({k:r.k,name:NM[r.k],q:r.q,ctc:r.ctc,val:r.val,dq:r.dq||0})),date:new Date(),plan:(()=>{const p=planOn()&&window.plSel&&plSel();return p?{op:({CLARO:'Claro',ENTEL:'Entel',WOM:'WOM'})[p.op]||p.op,pn:p.pn,fee:p.fee,ci:p.ci,mo:p.mo,r70:Math.round(plOferta()*.7)}:null})()}}
+function quoteText(Q,name,seller){const L=[];const cuo=Q.nlab==='Contado';const nq=cuo?'':Q.nlab.split(' ')[0];
+  const st=(typeof stById==='function'&&STORE)?stById(STORE):null;const tienda=st?'Falabella '+(st[1].split(' · ')[1]||st[1]):'Falabella';
+  const WH={p1:'Te protege ante robo con violencia o por la fuerza, y ante caídas, golpes y líquidos.',p2:'Te protege ante caídas, golpes y líquidos, los accidentes más comunes.',ge:`Cubre fallas de fábrica por ${YR(S.cov)} más, desde que termina la garantía Apple.`,nor:'Incluye solo la garantía Apple de 12 meses por fallas de fabricación.'};
+  L.push(`Hola${name?' '+name.split(' ')[0]:''}:`,'',`Muchas gracias por visitarnos hoy en ${tienda}. Fue un gusto atenderte. Como conversamos, te comparto el detalle de tu cotización para que lo revises con calma.`,'');
+  L.push('TU EQUIPO',Q.prod,`Precio ${Q.ptype.replace(/^precio /,'')}: ${clp(Q.price)}`);if(Q.acc)L.push(`Accesorios: ${Q.acc}`);
+  if(Q.plan){L.push('','TU PLAN',`${Q.plan.pn.toLowerCase().includes(Q.plan.op.toLowerCase())?'':Q.plan.op+' · '}${Q.plan.pn}`,`Cuota inicial: ${clp(Q.plan.ci)}`,`Cargo fijo: ${clp(Q.plan.fee)} al mes · mandato ${Q.plan.mo} meses`)}
+  L.push(`Forma de pago${Q.plan?' de la cuota inicial':''}: ${cuo?'contado':Q.nlab+' con tarjeta CMR'}`,'','TUS OPCIONES DE PROTECCIÓN');
+  Q.opts.forEach((o,i)=>{L.push(`${i+1}. ${o.name}${i===0&&o.k!=='nor'?' (recomendado)':''}`,Q.plan?`   Cuota inicial + seguro: ${cuo?'':nq+' cuotas de '}${clp(o.q)}`:`   ${cuo?'Total':nq+' cuotas de'} ${clp(o.q)}${cuo?'':' · total '+clp(o.ctc)}`,`   ${WH[o.k]||''}`)});
+  const best=Q.opts.find(o=>o.k!=='nor');
+  if(Q.plan)L.push('','¿Por qué sumar el Seguro Connect?',`Si tu iPhone sufre un robo o un daño, recuperas el 70 % del precio oferta: ${clp(Q.plan.r70)}. ${Q.plan.r70>=Q.plan.ci?'Es más de lo que pagas de cuota inicial.':'Así proteges lo que invertiste desde el primer día.'}`);
+  else if(best&&best.dq)L.push('','Mi recomendación',`Por ${clp(best.dq)}${cuo?' adicionales':' más al mes'}, el ${best.name} te deja tranquilo frente a lo inesperado. Reparar un equipo fuera de garantía suele costar mucho más.`);
+  L.push('','Importante',`• Esta cotización es válida solo por hoy, ${fdate(Q.date)}. Los precios pueden cambiar sin previo aviso.`,'• Los valores en cuotas son referenciales y están sujetos a la evaluación y condiciones de la tarjeta CMR.','• Cuando vengas a la tienda, un asesor de ventas te ayudará a confirmar todo.');
+  L.push('','Si tienes cualquier duda, responde este correo y con gusto te ayudo.','','Saludos cordiales,');if(seller)L.push(seller,`Asesor de ventas · ${tienda}`);else L.push(tienda);
+  return L.join('\n')}
 function quoteHTML(Q,name,seller){return `<h3>Cotización Falabella</h3><div><span class="vd">Válida solo el ${fdate(Q.date)}</span></div><p style="margin:10px 0 4px">${name?'Hola '+esc(name)+', g':'G'}racias por visitarnos. Esta es tu cotización:</p>
  <table><tr><th>Producto</th><th>Precio</th><th>Financiamiento</th></tr><tr><td>${esc(Q.prod)}${Q.acc?'<br><small>'+esc(Q.acc)+'</small>':''}</td><td>${clp(Q.price)}<br><small>${Q.ptype}</small></td><td>${Q.nlab}<br><small>tarjeta CMR</small></td></tr>${Q.plan?`<tr><td colspan="3">${Q.plan.pn.toLowerCase().includes(Q.plan.op.toLowerCase())?'':esc(Q.plan.op)+' · '}${esc(Q.plan.pn)}: cuota inicial <b>${clp(Q.plan.ci)}</b> + cargo fijo <b>${clp(Q.plan.fee)}</b> al mes · mandato ${Q.plan.mo} meses<br><small>Con Seguro Connect recuperas el 70 % del precio oferta: ${clp(Q.plan.r70)}</small></td></tr>`:''}</table>
  <table><tr><th>Alternativa</th><th>${Q.nlab==='Contado'?'Total':'Cuota'}</th><th>Total</th></tr>${Q.opts.map((o,i)=>`<tr class="${i===0?'hl':''}"><td>${o.name}${o.val?`<br><small>protección ${clp(o.val)}</small>`:''}</td><td>${clp(o.q)}</td><td>${clp(o.ctc)}</td></tr>`).join('')}</table>
@@ -1758,7 +1769,7 @@ function quoteHTML(Q,name,seller){return `<h3>Cotización Falabella</h3><div><sp
 function paintQ(){const Q=quoteData();const nm=$('qName').value.trim(),ml=$('qMail').value.trim(),sl=$('qSeller').value.trim();
   if(!Q.price){$('qPrev').innerHTML='<p>Escribe o elige el precio del producto para generar la cotización.</p>';return}
   $('qPrev').innerHTML=quoteHTML(Q,nm,sl);
-  if(!QED.s)$('qSubj').value=`Tu cotización Falabella · ${Q.prod} · ${fdate(Q.date)}`;
+  if(!QED.s)$('qSubj').value=`${$('qName').value.trim()?$('qName').value.trim().split(' ')[0]+', aquí':'Aquí'} está tu cotización: ${Q.prod} · Falabella`;
   if(!QED.b)$('qBody').value=quoteText(Q,nm,sl);
   $('qSend').href=`mailto:${encodeURIComponent(ml)}?subject=${encodeURIComponent($('qSubj').value)}&body=${encodeURIComponent($('qBody').value)}`}
 const QED={s:false,b:false};
@@ -1770,9 +1781,8 @@ const okMail=s=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
 const escH=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 $('qGo').addEventListener('click',async()=>{const to=$('qMail').value.trim();if(!okMail(to)){$('qMsg').textContent='Escribe un correo válido del cliente.';$('qMail').focus();return}
   const Q=quoteData();if(!Q.price){$('qMsg').textContent='Falta el precio del producto.';return}const btn=$('qGo');btn.disabled=true;$('qMsg').textContent='Enviando…';
-  try{const body=$('qBody').value;const html='<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#111">'+escH(body).split('\n').map(l=>l?'<p style="margin:0 0 6px">'+l+'</p>':'<br>').join('')+'</div>';
+  try{const body=$('qBody').value;const html='<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#111">'+escH(body).split('\n').map(l=>!l?'<br>':/^[A-ZÁÉÍÓÚÑ¿ ]{6,}$/.test(l)||/^(Mi recomendación|Importante|¿Por qué sumar el Seguro Connect\?)$/.test(l)?'<p style="margin:10px 0 6px;font-weight:700;color:#000">'+l+'</p>':'<p style="margin:0 0 4px">'+l.replace(/^   /,'&nbsp;&nbsp;&nbsp;')+'</p>').join('')+'</div>';
     const input={to:[to],subject:$('qSubj').value,body,htmlBody:html};
-    if($('qAtt').checked){try{const doc=await makeQuotePdf(Q,$('qName').value.trim(),$('qSeller').value.trim());const b64=doc.output('datauristring').split(',')[1];input.attachments=[{content:b64,filename:'Cotizacion_Falabella_'+dstr(Q.date)+'.pdf',mimeType:'application/pdf'}]}catch(_){}}
     await MCP.callTool('Gmail','send_message',input,{cache:false});STAT.add('mail');$('qMsg').textContent='Correo enviado a '+to+' desde tu Gmail.'}
   catch(e){const c=e&&e.code;$('qMsg').textContent=c==='server_not_connected'||c==='server_not_found'?'Gmail no está conectado en esta cuenta: usa "Abrir en app de correo".':c==='needs_reauth'?'Vuelve a conectar Gmail en Claude y reintenta.':c==='not_granted'||c==='consent_required'?'No se dio permiso para enviar con Gmail.':'No se pudo enviar ('+(e&&e.message||'error')+'). Usa "Abrir en app de correo".'}
   finally{btn.disabled=false}});
@@ -1791,7 +1801,7 @@ async function makeQuotePdf(Q,nm,sl){await loadJS(JSPDF);await loadJS(AUTOT);con
     doc.autoTable({startY:doc.lastAutoTable.finalY+14,head:[['Alternativa',Q.nlab==='Contado'?'Total':'Cuota','Total']],body:Q.opts.map(o=>[o.name+(o.val?'\nprotección '+pdfNum(o.val):''),pdfNum(o.q),pdfNum(o.ctc)]),theme:'grid',headStyles:{fillColor:[30,30,30]},styles:{fontSize:10},didParseCell:d=>{if(d.section==='body'&&d.row.index===0)d.cell.styles.fillColor=[231,246,234]}});
     doc.setFontSize(9);doc.setTextColor(90,90,90);doc.text(doc.splitTextToSize('Términos y condiciones: los precios cotizados pueden cambiar sin previo aviso. Al dirigirte a la tienda puedes asesorarte con un asesor de ventas. Valores en cuotas referenciales, sujetos a la evaluación y condiciones de la tarjeta CMR. Cotización válida solo el día '+fdate(Q.date)+'.'+(sl?' Te atendió: '+sl+'.':''),515),40,doc.lastAutoTable.finalY+24);
     return doc}
-$('qPdf').addEventListener('click',async()=>{const Q=quoteData();if(!Q.price)return;$('qMsg').textContent='Generando PDF…';
+if($('qPdf'))$('qPdf').addEventListener('click',async()=>{const Q=quoteData();if(!Q.price)return;$('qMsg').textContent='Generando PDF…';
   try{const doc=await makeQuotePdf(Q,$('qName').value.trim(),$('qSeller').value.trim());
     const ok=await saveFile(`Cotizacion_Falabella_${dstr(Q.date)}.pdf`,doc.output('blob'));if(ok){STAT.add('pdf');$('qMsg').textContent='PDF descargado: adjúntalo al correo del cliente.'}else $('qMsg').textContent='Descarga cancelada.'}catch(e){$('qMsg').textContent='No se pudo generar el PDF en este navegador.'}});
 
@@ -1919,7 +1929,9 @@ function render(){const box=$('plBox');if(!box)return;const on=planOn();box.hidd
       <li>Lo pagas en la misma cuota con tu tarjeta CMR y te protege desde el primer día.</li></ul></div>`}
 window.renderPlans=render;
 document.addEventListener('click',e=>{if(!e.target.closest('#plX'))return;const m=model(),p=plSel();if(m&&p&&window.xFromPlan)xFromPlan(m.name,curCap(),ON[p.op]||p.op)});
-const _rs=renderSide;renderSide=function(){_rs();render();document.body.classList.toggle('plmode',planOn())};
+const _rs=renderSide;renderSide=function(){_rs();render();const po=planOn();document.body.classList.toggle('plmode',po);
+  /* con plan solo Seguro Connect: sin garantía extendida */
+  if(po){['ge2Row','evtRow'].forEach(id=>{const e=$(id);if(e)e.hidden=true})}const tc=$('tb-cov');if(tc){tc.hidden=po;if(po&&tc.getAttribute('aria-selected')==='true')$('tb-res').click()}};
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
   if(t.dataset.plop){S.plOp=t.dataset.plop;S.pl=null;renderSide();renderCards();renderNeed();renderTable();return}
   if(t.dataset.plpn){const p=plans().find(x=>x.pn===t.dataset.plpn&&x.fee===+t.dataset.plfee);if(p){S.pl=p;S.plOp=p.op}renderSide();renderCards();renderNeed();renderTable();return}

@@ -30,3 +30,5 @@ El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el regist
 - Modo Capacitación (botón en la barra superior): recorrido guiado; no suma al Panel de impacto.
 - Celular: accesorios, beneficios Connect y argumentos Exchange plegables; Partes y piezas oculto por defecto.
 - Esta versión (GitHub) no registra uso en el Panel de impacto: se muestra un aviso.
+- Con plan solo se ofrece Seguro Connect Daño y Robo y Seguro Connect Daño: se ocultan la garantía extendida, el evento de garantía y la pestaña "Qué cubre la garantía".
+- Cotización por correo: mensaje cordial solo en texto (sin PDF adjunto), con saludo, equipo, plan, opciones de protección, recomendación y firma del asesor.
