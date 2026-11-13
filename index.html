@@ -617,6 +617,9 @@ html,body{background:#000!important}
 .pl70box h4{margin:0 0 4px;font-size:17px}
 
 #qPrev{display:none}.mdl textarea.qmsg{min-height:440px;line-height:1.5}
+#accBox.accoff .acc-rail,#accBox.accoff .acc-nav,#accBox.accoff .segc,#accBox.accoff .acc-sum,#accBox.accoff #accInfo{display:none}
+#accBox .acc-tg{margin-left:auto;order:9}
+#tb-cov,#pCov{display:none!important}
 .pl3{grid-column:1/-1;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:10px;background:rgba(255,255,255,.03)}
 .pl3 .k{font-size:13px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
 .pl3 .st{display:flex;gap:12px;align-items:center}.pl3 .st i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;background:#3a3a3c;color:#fff}
@@ -641,7 +644,6 @@ html,body{background:#000!important}
 .mmore{display:none;font:inherit;font-size:13.5px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;margin:8px 0 0}
 @media (max-width:600px){
  .mmore{display:inline-flex}
- #accBox:not(.open) .acc-rail,#accBox:not(.open) .acc-nav,#accBox:not(.open) .acc-h .segc{display:none}
  #pl70:not(.open)>div:nth-child(2){display:none}
  .xarg:not(.open) .ben-g{display:none}
  .hero h1{font-size:30px;margin-bottom:10px}
@@ -690,7 +692,7 @@ html,body{background:#000!important}
       <div class="pl70box" id="pl70"></div>
     </div>
     <div class="acc" id="accBox" hidden>
-      <div class="acc-h"><span class="lab">Accesorios</span><small id="accInfo">Agrega hasta 3 al cálculo</small>
+      <div class="acc-h"><span class="lab">Accesorios</span><label class="tgl acc-tg" for="inAcc">Mostrar <span class="sw"><input type="checkbox" id="inAcc"></span></label><small id="accInfo">Agrega hasta 3 al cálculo</small>
         <div class="segc" role="group" aria-label="Precio de accesorios"><button type="button" data-accp="int" aria-pressed="true">Precio oferta</button><button type="button" data-accp="cmr" aria-pressed="false">Precio CMR</button></div>
         <button type="button" class="acc-nav" data-accnav="-1" aria-label="Accesorios anteriores">‹</button><button type="button" class="acc-nav" data-accnav="1" aria-label="Más accesorios">›</button></div>
       <div class="acc-rail" id="accRail" role="list"></div>
@@ -741,8 +743,8 @@ html,body{background:#000!important}
 </section>
 
 <section class="wrap sec">
-  <div class="tabs"><span class="tab solo" aria-selected="true"><span class="sn">2</span>Partes y piezas</span><label class="tgl" for="inParts">Mostrar <span class="sw"><input type="checkbox" id="inParts" checked></span></label></div>
-  <div class="folder" id="partsFolder"><div id="presu"></div><div class="folder-h"><span id="nSub">Valor referencial del repuesto</span></div><div id="need"></div></div>
+  <div class="tabs"><span class="tab solo" aria-selected="true"><span class="sn">2</span>Partes y piezas</span><label class="tgl" for="inParts">Mostrar <span class="sw"><input type="checkbox" id="inParts"></span></label></div>
+  <div class="folder" id="partsFolder" hidden><div id="presu"></div><div class="folder-h"><span id="nSub">Valor referencial del repuesto</span></div><div id="need"></div></div>
 </section>
 
 
@@ -1083,13 +1085,16 @@ function avail(){const c=cat(),m=model();return c.plans.filter(k=>(k!=='p2'||m.p
 function protVal(k){const P=bp();if(!P)return null;
   if(k==='ge')return geVal(S.cov);
   return segVal(k,S.cov,P)}
-/* Tarifario CONNECT (Excel del usuario): prima en UF por tramo [desde, hasta, UF 12 m, UF 24 m]. Folleto con UF de referencia 25/09/2024. */
-const UF_P1=[[50001, 70000, 0.7968, 1.1608], [70001, 100000, 1.1249, 1.628], [100001, 150000, 1.575, 2.2953], [150001, 200000, 1.978, 2.8558], [200001, 225000, 2.2806, 3.311], [225001, 250000, 2.5428, 3.6916], [250001, 275000, 2.8049, 4.0722], [275001, 300000, 3.0671, 4.4528], [300001, 325000, 3.3867, 4.9242], [325001, 350000, 3.6534, 5.3119], [350001, 375000, 3.9201, 5.6996], [375001, 400000, 4.1868, 6.0874], [400001, 450000, 4.2948, 6.2251], [450001, 500000, 4.7885, 6.9407], [500001, 550000, 5.3322, 7.741], [550001, 600000, 5.8306, 8.4645], [600001, 650000, 6.0684, 8.8032], [650001, 700000, 6.5463, 9.4964], [700001, 800000, 7.3966, 10.7298], [800001, 900000, 8.3528, 12.1177], [900001, 1100000, 9.609, 13.9328], [1100001, 1300000, 12.0371, 17.456], [1300001, 1500000, 13.7714, 19.965], [1500001, 1750000, 16.04, 23.2481], [1750001, 2000000, 17.3993, 25.2232], [2000001, 2250000, 20.4461, 29.654], [2250001, 2500000, 22.7148, 32.9372]];
-const UF_P2=[[0, 10000, 0.0844, 0.1146], [10001, 20000, 0.1593, 0.2321], [20001, 35000, 0.2625, 0.3868], [35001, 40000, 0.3807, 0.5554], [40001, 50000, 0.4648, 0.678], [50001, 70000, 0.6656, 0.966], [70001, 100000, 0.9375, 1.361], [100001, 150000, 1.2562, 1.8149], [150001, 200000, 1.7062, 2.4821], [200001, 225000, 1.9786, 2.8595], [225001, 250000, 2.206, 3.1882], [250001, 275000, 2.4334, 3.5169], [275001, 300000, 2.6608, 3.8456], [300001, 325000, 2.888, 4.1912], [325001, 350000, 3.1154, 4.5212], [350001, 375000, 3.3428, 4.8512], [375001, 400000, 3.5702, 5.1813], [400001, 450000, 3.462, 5.0147], [450001, 500000, 3.8599, 5.5911], [500001, 550000, 4.2587, 6.1628], [550001, 600000, 4.6568, 6.7387], [600001, 650000, 4.9311, 7.1588], [650001, 700000, 5.3194, 7.7225], [700001, 800000, 5.8685, 8.5143], [800001, 900000, 7.2091, 10.4362], [900001, 1100000, 7.7434, 11.2103], [1100001, 1300000, 9.3372, 13.5324], [1300001, 1500000, 10.4902, 15.2139], [1500001, 1750000, 12.2808, 17.803], [1750001, 2000000, 13.9307, 20.2052], [2000001, 2250000, 15.6931, 22.7677], [2250001, 2500000, 17.2681, 25.0364], [2500001, 2750000, 19.0483, 27.6199], [2750001, 3000000, 20.8285, 30.2022]];
+/* Folleto CONNECT (Daño Accidental + Robo Celulares / Daño Accidental Dispositivos + Celulares): [desde, hasta, UF 12 m, UF 24 m, $ 12 m, $ 24 m] · valores CLP del folleto (UF ref. 25/09/2024 $37.891,5) */
+const UF_P1=[[50001, 70000, 0.7968, 1.1608, 30300, 44300],  [70001, 100000, 1.1249, 1.628, 42800, 61800],  [100001, 150000, 1.575, 2.2953, 59500, 87200],  [150001, 200000, 1.978, 2.8558, 75000, 108400],  [200001, 225000, 2.2806, 3.311, 86400, 125400],  [225001, 250000, 2.5428, 3.6916, 96600, 139800],  [250001, 275000, 2.8049, 4.0722, 106500, 154200],  [275001, 300000, 3.0671, 4.4528, 116300, 168600],  [300001, 325000, 3.3867, 4.9242, 128500, 186800],  [325001, 350000, 3.6534, 5.3119, 138300, 201200],  [350001, 375000, 3.9201, 5.6996, 148500, 216000],  [375001, 400000, 4.1868, 6.0874, 158800, 230800],  [400001, 450000, 4.2948, 6.2251, 162900, 235700],  [450001, 500000, 4.7885, 6.9407, 181100, 263000],  [500001, 550000, 5.3322, 7.741, 202000, 293700],  [550001, 600000, 5.8306, 8.4645, 220900, 320600],  [600001, 650000, 6.0684, 8.8032, 230000, 333800],  [650001, 700000, 6.5463, 9.4964, 248200, 360000],  [700001, 800000, 7.3966, 10.7298, 280400, 406600],  [800001, 900000, 8.3528, 12.1177, 316400, 458900],  [900001, 1100000, 9.609, 13.9328, 363800, 527800],  [1100001, 1300000, 12.0371, 17.456, 456200, 661600],  [1300001, 1500000, 13.7714, 19.965, 521800, 756700],  [1500001, 1750000, 16.04, 23.2481, 607800, 881000],  [1750001, 2000000, 17.3993, 25.2232, 659300, 956000],  [2000001, 2250000, 20.4461, 29.654, 774500, 1123500],  [2250001, 2500000, 22.7148, 32.9372, 860900, 1248100]];
+const UF_P2=[[0, 10000, 0.0844, 0.1146, 3000, 4500],  [10001, 20000, 0.1593, 0.2321, 5700, 9100],  [20001, 35000, 0.2625, 0.3868, 9900, 14800],  [35001, 40000, 0.3807, 0.5554, 14400, 21200],  [40001, 50000, 0.4648, 0.678, 17400, 25800],  [50001, 70000, 0.6656, 0.966, 25400, 36400],  [70001, 100000, 0.9375, 1.361, 35600, 51500],  [100001, 150000, 1.2562, 1.8149, 47700, 69000],  [150001, 200000, 1.7062, 2.4821, 64400, 94300],  [200001, 225000, 1.9786, 2.8595, 75000, 108400],  [225001, 250000, 2.206, 3.1882, 83400, 120900],  [250001, 275000, 2.4334, 3.5169, 92100, 133400],  [275001, 300000, 2.6608, 3.8456, 101200, 145500],  [300001, 325000, 2.888, 4.1912, 109500, 158800],  [325001, 350000, 3.1154, 4.5212, 118200, 171300],  [350001, 375000, 3.3428, 4.8512, 126600, 184200],  [375001, 400000, 3.5702, 5.1813, 135300, 196300],  [400001, 450000, 3.462, 5.0147, 131100, 189800],  [450001, 500000, 3.8599, 5.5911, 146300, 211800],  [500001, 550000, 4.2587, 6.1628, 161400, 233400],  [550001, 600000, 4.6568, 6.7387, 176200, 255400],  [600001, 650000, 4.9311, 7.1588, 186800, 271300],  [650001, 700000, 5.3194, 7.7225, 201600, 292500],  [700001, 800000, 5.8685, 8.5143, 222400, 322500],  [800001, 900000, 7.2091, 10.4362, 273200, 395600],  [900001, 1100000, 7.7434, 11.2103, 293700, 424800],  [1100001, 1300000, 9.3372, 13.5324, 353900, 512700],  [1300001, 1500000, 10.4902, 15.2139, 397900, 576300],  [1500001, 1750000, 12.2808, 17.803, 465300, 674500],  [1750001, 2000000, 13.9307, 20.2052, 527800, 765800],  [2000001, 2250000, 15.6931, 22.7677, 594900, 862400],  [2250001, 2500000, 17.2681, 25.0364, 654400, 948800],  [2500001, 2750000, 19.0483, 27.6199, 721800, 1046600],  [2750001, 3000000, 20.8285, 30.2022, 789300, 1144300]];
 const UF_DEF=41274.20; /* UF del 05/11/2026 según SII */
-function segVal(k,cv,P){const t=tramo(CFG[k],P);if(!t)return {v:0,src:'out'};
-  if((CFG.segMode||'uf')==='uf'){const r=(k==='p1'?UF_P1:UF_P2).find(r=>P>=r[0]&&P<=r[1]);const uf=Number(CFG.uf)||UF_DEF;if(r){const pu=cv===12?r[2]:r[3];return {v:Math.round(pu*uf/100)*100,src:'uf',pu,uf}}}
-  return {v:t['m'+cv],src:'tab'}}
+function segVal(k,cv,P){const t=tramo(CFG[k],P);
+  const sm=CFG.segV===2?(CFG.segMode||'tab'):'tab';const fr=(k==='p1'?UF_P1:UF_P2).find(r=>P>=r[0]&&P<=r[1]);
+  if(sm==='tab'&&fr)return {v:cv===12?fr[4]:fr[5],src:'fol'};
+  if(!t&&!fr)return {v:0,src:'out'};
+  if(sm==='uf'){const r=(k==='p1'?UF_P1:UF_P2).find(r=>P>=r[0]&&P<=r[1]);const uf=Number(CFG.uf)||UF_DEF;if(r){const pu=cv===12?r[2]:r[3];return {v:Math.round(pu*uf/100)*100,src:'uf',pu,uf}}}
+  return t?{v:t['m'+cv],src:'tab'}:{v:0,src:'out'}}
 /* Garantía extendida publicada en falabella.com (precio normal, sin descuento), leída desde la ficha de cada producto el 06/11/2026. Se usa la referencia de precio más cercana (±20 %); en Apple Watch, el tramo de precio que indica Falabella. */
 const GE_REF={
  iphone:{m12:[['iPhone 17e',739990,84990],['iPhone 16',999990,84990],['iPhone 17',1049990,109990],['iPhone Air',1299990,109990],['iPhone 17 Pro',1349990,129990],['iPhone 17 Pro Max',1499990,129990],['iPhone Duo',2499990,199990]],
@@ -1249,7 +1254,7 @@ function openAj(){
    <div class="panel"><h2>Garantía extendida · % del precio<small>Opcional · déjalo en 0 si no aplica</small></h2><div class="grid2"><div class="fld"><label class="lab" for="pc12">1 año (12 meses) %</label><input class="inp" id="pc12" inputmode="decimal" value="${String(CFG.gePct.m12).replace('.',',')}"></div><div class="fld"><label class="lab" for="pc24">2 años (24 meses) %</label><input class="inp" id="pc24" inputmode="decimal" value="${String(CFG.gePct.m24).replace('.',',')}"></div></div></div>
    <div class="panel"><h2>Evento garantía (iPad y Mac)<small>Descuento que aplica el botón "Evento garantía"</small></h2><div class="fld"><label class="lab" for="evtP">Descuento %</label><input class="inp" id="evtP" inputmode="numeric" value="${evtPct()}"></div></div>
    <div class="panel"><h2>Garantía extendida por tramo de precio<small>Opcional · tiene prioridad sobre el %</small></h2><div class="hint">Pega desde Excel 4 columnas: desde · hasta · 12 meses · 24 meses (una fila por tramo).</div><textarea class="inp" id="tGE" placeholder="150001	200000	19990	34990">${toTxt(CFG.ge)}</textarea><span class="hint" id="cGE"></span></div>
-   <div class="panel"><h2>Seguro Connect · cálculo<small>Tarifario CONNECT con prima en UF por tramo</small></h2><div class="grid2"><div class="fld"><label class="lab" for="segMode">Calcular con</label><select class="inp" id="segMode"><option value="uf"${(CFG.segMode||'uf')==='uf'?' selected':''}>Prima UF × valor UF del día</option><option value="tab"${CFG.segMode==='tab'?' selected':''}>Precio en $ del folleto (UF 25/09/2024)</option></select></div><div class="fld"><label class="lab" for="ufIn">Valor UF</label><input class="inp" id="ufIn" inputmode="decimal" value="${String(Number(CFG.uf)||UF_DEF).replace('.',',')}"></div></div><div class="hint">UF del 05/11/2026 según SII: $41.274,20. Actualízala cuando cambie para que el seguro quede al día.</div></div>
+   <div class="panel"><h2>Seguro Connect · cálculo<small>Tramos y valores del folleto CONNECT</small></h2><div class="grid2"><div class="fld"><label class="lab" for="segMode">Calcular con</label><select class="inp" id="segMode"><option value="tab"${(CFG.segV===2?(CFG.segMode||'tab'):'tab')==='tab'?' selected':''}>Valores en $ del folleto CONNECT (recomendado)</option><option value="uf"${(CFG.segV===2&&CFG.segMode==='uf')?' selected':''}>Prima UF × valor UF del día</option></select></div><div class="fld"><label class="lab" for="ufIn">Valor UF</label><input class="inp" id="ufIn" inputmode="decimal" value="${String(Number(CFG.uf)||UF_DEF).replace('.',',')}"></div></div><div class="hint">Por defecto se usan los valores en $ del folleto CONNECT (iguales a los de tienda). La opción UF del día solo aplica si eliges "Prima UF × valor UF del día".</div></div>
    <div class="panel"><h2>Seguro Connect P1 · Daño + Robo<small>Solo celulares</small></h2><textarea class="inp" id="tP1">${toTxt(CFG.p1)}</textarea></div>
    <div class="panel"><h2>Seguro Connect P2 · Daño<small>Celulares, tablets, notebooks, smartwatch</small></h2><textarea class="inp" id="tP2">${toTxt(CFG.p2)}</textarea></div>
    <div class="panel"><h2>Presupuesto técnico por categoría</h2><div class="grid2">${CATS.filter(c=>c.brand==='Apple').map(c=>`<div class="fld"><label class="lab" for="pr_${c.id}">${c.name}</label><input class="inp" id="pr_${c.id}" data-pr="${c.id}" inputmode="numeric" value="${clp(CFG.presu[c.id]||0)}"></div>`).join('')}</div></div>
@@ -1277,7 +1282,7 @@ function saveAj(){
   if(!ok){toast('Completa el precio y todas las cuotas de referencia');return}
   const pnum=v=>{const x=parseFloat(String(v).replace(',','.'));return isFinite(x)&&x>=0?x:0};const gePct={m12:pnum($('pc12').value),m24:pnum($('pc24').value)};
   const presu={...CFG.presu};CATS.filter(c=>c.brand==='Apple').forEach(c=>presu[c.id]=dg($('pr_'+c.id).value));
-  CFG={...CFG,segMode:$('segMode').value,uf:(()=>{const x=parseFloat(String($('ufIn').value).replace(/\./g,'').replace(',','.'));return x>1000?x:UF_DEF})(),evtPct:Math.min(90,dg($('evtP').value)||30),ge,gePct,p1,p2,presu,fx,ite:{price:dg($('iteP').value)||ITE_DEF.price,n:dg($('iteN').value)||3,ctc:dg($('iteC').value)||ITE_DEF.ctc},updated:new Date().toISOString()};
+  CFG={...CFG,segV:2,segMode:$('segMode').value,uf:(()=>{const x=parseFloat(String($('ufIn').value).replace(/\./g,'').replace(',','.'));return x>1000?x:UF_DEF})(),evtPct:Math.min(90,dg($('evtP').value)||30),ge,gePct,p1,p2,presu,fx,ite:{price:dg($('iteP').value)||ITE_DEF.price,n:dg($('iteN').value)||3,ctc:dg($('iteC').value)||ITE_DEF.ctc},updated:new Date().toISOString()};
   persist();closeAj();renderAll();toast(DB&&CAN?'Guardado para toda la tienda':'Guardado en este equipo');
 }
 function persist(){try{localStorage.setItem(LS+'_cfg',JSON.stringify(CFG))}catch(_){}
@@ -1460,7 +1465,7 @@ function render(){const P=$('xPanel');if(!P||P.hidden)return;
    <div class="xeq"><div class="t"><small>${plan?'Cuota inicial':'Precio'} ${esc(nm)}${plan&&op?' · '+esc(op.op):''}</small><b${plan?' class="plci"':''}>${clp(base)}</b></div><span class="op">−</span>
    <div class="t gc"><small>Gift card Exchange · ${esc(X.gm)} ${esc(capLab(X.gc))}${X.bat?' · batería bajo 80 %':''}</small><b>${clp(giftNet())}</b></div><span class="op">=</span>
    <div class="t tot"><small>El cliente paga</small><b>${clp(pay)}</b></div></div>
-   <p class="xnote">${!base?'Elige el equipo nuevo y revisa el '+(plan?'valor de la cuota inicial.':'precio.'):giftNet()>base?`La gift card cubre todo. Queda un saldo a favor de <b>${clp(giftNet()-base)}</b> en la gift card.`:plan?`Saldo de la cuota inicial <b>${clp(pay)}</b> financiado con CMR.${op&&op.fee?`<br>Además paga el plan <b>${String(op.pn||'').toLowerCase().includes(String(op.op).toLowerCase())?'':esc(op.op)+' · '}${esc(op.pn||'')}</b>: cargo fijo <b>${clp(op.fee)}</b> al mes · mandato ${op.mo} meses.${X.price?`<br>Con Seguro Connect recupera el 70 % del precio oferta: <b>${clp(Math.round(X.price*.7))}</b>.`:''}`:''}`:`Saldo <b>${clp(pay)}</b> se paga al contado o en cuotas con CMR.`}</p>`;
+   <p class="xnote">${!base?'Elige el equipo nuevo y revisa el '+(plan?'valor de la cuota inicial.':'precio.'):giftNet()>base?`La gift card cubre todo. Queda un saldo a favor de <b>${clp(giftNet()-base)}</b> en la gift card.`:plan?`Saldo de la cuota inicial <b>${clp(pay)}</b> financiado con CMR.${op&&op.fee?`<br>Además paga ${/^plan/i.test(String(op.pn||''))?'el':'el plan'} <b>${String(op.pn||'').toLowerCase().includes(String(op.op).toLowerCase())?'':esc(op.op)+' · '}${esc(op.pn||'')}</b>: cargo fijo <b>${clp(op.fee)}</b> al mes · mandato ${op.mo} meses.${X.price?`<br>Con Seguro Connect recupera el 70 % del precio oferta: <b>${clp(Math.round(X.price*.7))}</b>.`:''}`:''}`:`Saldo <b>${clp(pay)}</b> se paga al contado o en cuotas con CMR.`}</p>`;
   /* financiamiento */
   $('xQn').innerHTML=[1,3,6,12,18,24,36,48].map(n=>`<button class="chip" type="button" data-xn="${n}" aria-pressed="${n===X.n}">${n===1?'Contado':n}</button>`).join('');
   document.querySelectorAll('[data-xc]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.xc===X.cov)));$('xSI').checked=X.si;
@@ -1469,6 +1474,7 @@ function render(){const P=$('xPanel');if(!P||P.hidden)return;
   const WH={p1:'Daño accidental (caídas, golpes, líquidos) y robo del equipo.',p2:'Daño accidental: caídas, golpes y líquidos.',ge:'Fallas mecánicas, eléctricas o electrónicas por '+yr+' más, desde que termina la garantía Apple. Incluye daño por variación de voltaje.',nor:'Fallas de fabricación durante el primer año.'};
   const RC={p1:'<span class="rec70">Recupera el 70 % de la inversión</span>',p2:'<span class="rec70">Recupera el 70 % de la inversión</span>',ge:'<span class="rec70 rec100">Recupera el 100 % de la inversión</span>',nor:''};
   const cols=[{k:'p1',t:'Seguro Connect Daño y Robo',s:'Connect · '+X.cov+' meses'+(plan?' · sobre el 70 %':'')},{k:'p2',t:'Seguro Connect Daño',s:'Connect · '+X.cov+' meses'+(plan?' · sobre el 70 %':'')}];
+  /* Liberado: Connect + garantía extendida + fabricante · Con plan: solo Seguro Connect (sin garantía extendida) */
   if(!plan)cols.push({k:'ge',t:'Garantía extendida '+yr,s:X.cov+' meses adicionales'});
   cols.push({k:'nor',t:'Garantía fabricante',s:'Apple · 12 meses'});
   const lab=n===1?'Contado':`${n} cuotas${si?' sin interés':''} de`;
@@ -1707,8 +1713,8 @@ $('stGeo').addEventListener('click',()=>{$('stMsg').textContent='Buscando ubicac
 document.addEventListener('click',e=>{const b=e.target.closest('[data-close]');if(b)$(b.dataset.close).hidden=true});
 
 /* ---------- Partes y piezas: mostrar / ocultar ---------- */
-const pf=$('partsFolder'),pi=$('inParts');const pv=ls.get('parts');if(pv==='0'){pi.checked=false;pf.hidden=true}
-pi.addEventListener('change',()=>{pf.hidden=!pi.checked;ls.set('parts',pi.checked?'1':'0')});
+const pf=$('partsFolder'),pi=$('inParts');const pv=ls.get('partsOn');pi.checked=pv==='1';pf.hidden=!pi.checked;
+pi.addEventListener('change',()=>{pf.hidden=!pi.checked;ls.set('partsOn',pi.checked?'1':'0')});
 
 /* ---------- Beneficios para el cliente ---------- */
 function topPart(){const c=cat(),m=model();if(!m)return null;let rows=[];
@@ -1931,7 +1937,7 @@ window.renderPlans=render;
 document.addEventListener('click',e=>{if(!e.target.closest('#plX'))return;const m=model(),p=plSel();if(m&&p&&window.xFromPlan)xFromPlan(m.name,curCap(),ON[p.op]||p.op)});
 const _rs=renderSide;renderSide=function(){_rs();render();const po=planOn();document.body.classList.toggle('plmode',po);
   /* con plan solo Seguro Connect: sin garantía extendida */
-  if(po){['ge2Row','evtRow'].forEach(id=>{const e=$(id);if(e)e.hidden=true})}const tc=$('tb-cov');if(tc){tc.hidden=po;if(po&&tc.getAttribute('aria-selected')==='true')$('tb-res').click()}};
+  if(po){['ge2Row','evtRow'].forEach(id=>{const e=$(id);if(e)e.hidden=true})}const tc=$('tb-cov');if(tc){tc.hidden=true;if(tc.getAttribute('aria-selected')==='true')$('tb-res').click()}};
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
   if(t.dataset.plop){S.plOp=t.dataset.plop;S.pl=null;renderSide();renderCards();renderNeed();renderTable();return}
   if(t.dataset.plpn){const p=plans().find(x=>x.pn===t.dataset.plpn&&x.fee===+t.dataset.plfee);if(p){S.pl=p;S.plOp=p.op}renderSide();renderCards();renderNeed();renderTable();return}
@@ -1948,13 +1954,15 @@ render();
 (function(){
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const ddm=t=>String(t||'').slice(0,10).split('-').reverse().slice(0,2).join('/');
+/* sin cotizador por correo */
+['qOpen','qOvl'].forEach(id=>{const e=$(id);if(e)e.remove()});
 /* 7 · aviso cuando los datos no se actualizaron */
 const hero=document.querySelector('.hero h1');hero.insertAdjacentHTML('afterend','<div class="stale" id="stale" role="status" hidden></div><p class="ghn" id="ghn" hidden></p>');
 function stale(){const now=new Date();const lim=new Date(now);lim.setDate(lim.getDate()-(now.getHours()>=10?1:2));const L=ymd(lim);
   const src=[['Precios',window.APR&&APR.t],['Planes',window.PLA&&PLA.t],['Exchange',window.__exT&&__exT()]].filter(x=>x[1]);
   const old=src.filter(x=>String(x[1]).slice(0,10)<L);const el=$('stale');if(!old.length){el.hidden=true;return}
   el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5M12 18v.01"/></svg><span><b>Datos sin actualizar:</b> '+old.map(x=>x[0]+' al '+ddm(x[1])).join(' · ')+'. Confirma el precio con la etiqueta de la tienda antes de cotizar.</span>';el.hidden=false}
-window.paintStale=stale;stale();setInterval(stale,60000);
+window.paintStale=()=>{};/* aviso de datos desactualizados oculto a pedido del usuario */
 /* 8 · versión sin registro de uso (GitHub o sin sesión) */
 setTimeout(()=>{if(DB)return;let off=false;try{off=localStorage.getItem('ffa_ghn')==='0'}catch(_){}if(off)return;const g=$('ghn');
   g.innerHTML='Esta versión no registra uso en el Panel de impacto. Para que cuente, abre la calculadora desde el enlace de Claude.<button type="button" id="ghnX" aria-label="Ocultar aviso">Ocultar</button>';g.hidden=false;
@@ -1970,7 +1978,6 @@ const STEPS=[
  {sel:'.f-cov',t:'Cobertura y plan',p:'Elige 1 o 2 años de protección. En iPhone puedes activar "Cotizar con plan" para ver Claro, Entel y WOM con cuota inicial y cargo fijo.'},
  {sel:'#pRes',t:'Compara y recomienda',p:'La primera opción es la recomendada: Seguro Connect Daño y Robo. Muestra cuánto sube la cuota con cada protección.'},
  {sel:'#tb-ben',t:'Beneficios para ti',p:'Argumentos listos para conversar con el cliente según la categoría.'},
- {sel:'#qOpen',t:'Cotización por correo',p:'Envía al cliente las alternativas, válidas solo por hoy, con PDF adjunto. Tu nombre queda guardado para la próxima.'},
  {sel:'.cat[data-grp="exc"]',t:'Exchange Planes',p:'Si el cliente entrega un iPhone usado, calcula la gift card y lo que paga por el nuevo, liberado o con plan.'},
  {sel:'.cat[data-grp="cp"]',t:'Compra Protegida',p:'Ofrece el seguro de 180 días para la compra pagada con tarjeta.'},
  {sel:null,t:'¡Listo!',p:'Ya conoces la calculadora. Lo que hiciste durante la capacitación no se suma al Panel de impacto.'}];
@@ -1994,10 +2001,10 @@ document.addEventListener('keydown',e=>{if(ti>=0&&e.key==='Escape')end()});
 /* 10 · móvil: secciones plegables */
 function more(host,target,lab1,lab2,where){if(!host||!target)return;const b=document.createElement('button');b.type='button';b.className='mmore';b.textContent=lab1;b.setAttribute('aria-expanded','false');
   b.onclick=()=>{const o=target.classList.toggle('open');b.textContent=o?lab2:lab1;b.setAttribute('aria-expanded',String(o))};host.insertAdjacentElement(where||'beforeend',b)}
-more(document.querySelector('#accBox .acc-h'),$('accBox'),'Ver accesorios','Ocultar accesorios');
+{const ab=$('accBox'),ai=$('inAcc');const lg=k=>{try{return localStorage.getItem('ffa_'+k)}catch(_){return null}},lset=(k,v)=>{try{localStorage.setItem('ffa_'+k,v)}catch(_){}};ai.checked=lg('accOn')==='1';ab.classList.toggle('accoff',!ai.checked);
+ ai.addEventListener('change',()=>{ab.classList.toggle('accoff',!ai.checked);lset('accOn',ai.checked?'1':'0');if(!ai.checked&&S.acc&&Object.keys(S.acc).length){S.acc={};renderAcc();renderSide()}})}
 more($('pl70'),$('pl70'),'Ver beneficios Connect','Ocultar beneficios','afterend');
 const xa=document.querySelector('.xarg');more(xa&&xa.querySelector('h2'),xa,'Ver argumentos','Ocultar argumentos','afterend');
-if(matchMedia('(max-width:600px)').matches){let pv=null;try{pv=localStorage.getItem('ffa_parts')}catch(_){}if(pv===null){const pi=$('inParts');if(pi&&pi.checked){pi.checked=false;$('partsFolder').hidden=true}}}
 })();
 </script>
 <script>
