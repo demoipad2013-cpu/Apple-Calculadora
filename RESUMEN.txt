@@ -22,3 +22,7 @@ planes_apple: nueva fila iPhone 17 256GB WOM Plan Retail 500 GB.
 planes: nuevos Vivo X300 Pro, Huawei Nova 14 512GB, Huawei Pura 80 256GB, Motorola G17; varias cuotas de Android cambiaron.
 
 Cada .json tiene el formato del documento: {"t","items" (JSON de filas),"src"}.
+
+"Calculadora Apple.html": la app completa con los precios del 13-11 ya incluidos.
+Abierta como archivo (sin conexión) muestra estos precios; abierta desde el enlace de Claude se actualiza sola cada día.
+La carpeta "datos" trae las 6 bases tal como quedaron en la app.
