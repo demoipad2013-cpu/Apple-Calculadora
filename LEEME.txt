@@ -1,0 +1,13 @@
+Calculadora Apple – versión para GitHub (precios al 13-11-2026)
+
+Cómo subirlo:
+1. Descomprime este zip en tu computador (GitHub no abre el zip por dentro).
+2. En tu repositorio, pulsa "Add file" > "Upload files" y arrastra el CONTENIDO de la carpeta
+   (index.html y la carpeta datos), no el zip ni la carpeta completa.
+3. Debe reemplazar el index.html que ya está en la raíz del repositorio. Si tu archivo antiguo
+   tiene otro nombre, bórralo o renómbralo, porque GitHub Pages abre siempre index.html.
+4. Pulsa "Commit changes". GitHub Pages tarda 1 a 3 minutos en publicar; luego recarga la
+   página forzando la caché (Ctrl+Shift+R en PC, Cmd+Shift+R en Mac, o abre en ventana privada).
+
+Nota: en GitHub la página no se conecta a la base diaria de Claude; muestra los precios que
+trae incluidos. Para actualizar, sube el index.html nuevo que te entregue cada vez.
