@@ -36,3 +36,9 @@ El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el regist
 - Se eliminó el cotizador por correo (botón "Cotizar por mail").
 - Seguro Connect: valores en $ del folleto CONNECT por tramo (Daño + Robo Celulares y Daño Accidental), iguales a los de tienda; la opción UF del día queda en Ajustes.
 - Sin pestaña "Qué cubre la garantía" (quedan Comparar cuotas y Beneficios para ti); Partes y piezas y Accesorios ocultos por defecto con interruptor "Mostrar"; sin aviso de datos sin actualizar.
+- Comparación de modelos de iPhone en Exchange: el detalle termina en Capacidad.
+
+## Actualización 24/11/2026
+- Precios de iPhone, Mac, iPad, Apple Watch y AirPods, planes Connect (Claro, Entel, WOM) y montos Exchange desde falabella.com.
+- Nuevos: iPhone 17e (precio y planes), MacBook Pro 14" M6 16 GB, iMac 24" M4, iPad Air 13" M3, Apple Watch SE 3 GPS + Cellular, SE 2.ª gen, Series 9, Series 10 y Ultra 2, AirPods Max 2.
+- Exchange: la comparación de modelos de iPhone queda oculta, con un botón para mostrarla.
