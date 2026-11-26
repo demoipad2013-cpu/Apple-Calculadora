@@ -42,3 +42,8 @@ El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el regist
 - Precios de iPhone, Mac, iPad, Apple Watch y AirPods, planes Connect (Claro, Entel, WOM) y montos Exchange desde falabella.com.
 - Nuevos: iPhone 17e (precio y planes), MacBook Pro 14" M6 16 GB, iMac 24" M4, iPad Air 13" M3, Apple Watch SE 3 GPS + Cellular, SE 2.ª gen, Series 9, Series 10 y Ultra 2, AirPods Max 2.
 - Exchange: la comparación de modelos de iPhone queda oculta, con un botón para mostrarla.
+
+## Actualización 26/11/2026
+- Precios de iPhone (liberados y planes), Mac, iPad, Apple Watch y AirPods desde falabella.com.
+- iPhone: garantía extendida de 2 años con 20 % de descuento (interruptor "Garantía 2 años −20 %", encendido por defecto).
+- Campo "Gift card o pie" bajo las cuotas: se descuenta del precio elegido antes de calcular las cuotas.
