@@ -47,3 +47,6 @@ El panel de impacto (uso por tienda, día, semana, mes y 13 semanas) y el regist
 - Precios de iPhone (liberados y planes), Mac, iPad, Apple Watch y AirPods desde falabella.com.
 - iPhone: garantía extendida de 2 años con 20 % de descuento (interruptor "Garantía 2 años −20 %", encendido por defecto).
 - Campo "Gift card o pie" bajo las cuotas: se descuenta del precio elegido antes de calcular las cuotas.
+
+## Actualización 27/11/2026
+- Precios de iPhone (vuelven los precios CMR), Watch y AirPods; planes y Exchange revisados sin cambios.
